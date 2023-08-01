@@ -1,0 +1,76 @@
+const fs = require('fs');
+const express = require("express")
+const data = require("./data/datas.json");
+// const data = JSON.parse(fs.readFileSync('./data/datas.json',"utf-8"));
+// console.log(data.type)
+
+const app = express();
+
+const port = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== "production") {
+    require("dotenv").config();
+}
+
+app.get('/',(req,res) => {
+    res.send({message:"start express"})
+})
+app.get('/hello',(req,res) => {
+     res.json(data)
+    // console.log("dam")     
+})
+
+app.listen(port,()=>{
+    console.log(`servrer start port at  ${port}`)
+})
+
+
+
+// require("dotenv").config()
+
+
+
+
+
+
+
+
+------------------------------------ premium
+app.get('/task/pre',(req,res) => {
+    req.query.premiums = false
+   console.log(req.query.premiums)
+   if(req.query.premiums){
+    res.json(data)
+   }
+   else{
+    res.status(404).json({message:"error 404"})
+   }
+})
+
+
+------------------------------------ particular data
+ if(premium === "true"){
+    var z = JSON.parse(JSON.stringify(data));
+    var text = '';
+    for (var key in z) {
+        console.log(z[key])
+        // text += 'Index is: ' + key + '\nDescription is:  ' + z[key] + ' ';
+        text += 'Index is: ' + key + '\nDescription is:  ' + z[key] + ' ';
+        }
+    }
+
+
+
+
+    ----------------------------- 
+    
+app.get("/task/premiums", (req, res) => {
+    const premium = req.query.premium;
+    // console.log(premium)
+    if(premium === "true"){
+        res.json({data})
+    }
+    else{
+        res.send({message:"404"})
+    }
+});

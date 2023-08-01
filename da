@@ -1,0 +1,83 @@
+const fs = require("fs");
+const express = require("express");
+const data = require("./data/datas.json");
+const app = express();
+const port = process.env.PORT || 3000;
+
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+app.get("/task/sampledata", (req, res) => {
+  res.json(data);
+});
+
+// http://localhost:3000/task?types=Active_Jobs
+app.get("/task", (req, res) => {
+    var types = req.query.types
+    console.log(types)
+    if(types === "Active_Jobs"){
+        res.json({data})
+    }
+    else{
+        res.send({message:"404"})
+    }
+});
+
+
+
+
+
+app.get("/task/:premium", (req, res) => {
+  // req.query.premiums = false
+  const premium = req.query.premium;
+  console.log(premium);
+  var z = JSON.parse(JSON.stringify(data));
+  if (premium === "true") {
+    var text = "";
+    for (var key in z) {
+      // console.log(z.countPerDay)
+      // console.log(z.jobData[1].name)
+      // text += 'Index is: ' + key + '\nDescription is:  ' + z[key] + ' ';
+      text +=
+        "Index is: " +
+        key +
+        "\nDescription is:  " +
+        z[key[1]] +
+        " " +
+        z.jobData[1].name +
+        "-----";
+    }
+    // res.status(200).json(text)
+    res.send(text);
+  } else {
+    res.status(404).json({ message: "error 404" });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`servrer start port at  ${port}`);
+});
+
+
+
+
+
+// require("dotenv").config()
+// body = JSON.parse(body);
+// var text = '';
+// for (var key in body) {
+//   text += 'Index is: ' + key + '\nDescription is:  ' + body[key]
+// }
+// // The Description is:  "descriptive string"
+// console.log("Got a response: ", text);
+// res.send(text);
+
+// body = JSON.parse(body);
+// var text = '';
+// for (var key in body) {
+// text += 'Index is: ' + key + '\nDescription is:  ' + body[key]
+// }
+// // The Description is:  "descriptive string"
+// console.log("Got a response: ", text);
+// res.send(text);
